@@ -1,0 +1,53 @@
+# Node.js dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# VS Code settings
+.vscode/
+
+# Next.js specific
+.next/
+
+# Tailwind CSS output (optional)
+*.css.map
+
+# React Native (if applicable)
+.expo/
+android/
+ios/
+
+# SvelteKit/Vite
+.svelte-kit/
+.vite/
+
+# Coverage
+coverage/
+
+# Local databases
+*.sqlite
+*.db
+
+# Misc
+*.log
+*.tgz
+*.bak
+*.tmp
+.cache/

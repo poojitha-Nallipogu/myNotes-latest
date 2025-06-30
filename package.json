@@ -1,0 +1,18 @@
+{
+  "name": "notes-poojitha",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "poojitha nallipogu",
+  "license": "ISC",
+  "description": "this is project for notes management",
+  "dependencies": {
+    "dotenv": "^17.0.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.13.2",
+    "nodemon": "^3.1.9"
+  }
+}
