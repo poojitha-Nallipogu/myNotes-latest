@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cookieParser = require('cookie-parser')
 
 const connectDB = require('./lib/connectDB.js')
 
@@ -21,17 +22,21 @@ connectDB().
         console.log('error in connecting DB', err);
     });
 
+const {checkForAuthentication, restrictTo} = require('./middlewares/auth.middleware');
+
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+app.use(cookieParser());
+app.use(checkForAuthentication);
 
-
-
-app.use('/notes',noteRoutes);
-app.use('/user',userRoutes);
 app.use('/', staticRoutes);
+app.use('/notes', restrictTo(['user']), noteRoutes);
+app.use('/user', userRoutes);
+
 
 app.listen(PORT, ()=>{
     console.log('server is running at port: '+PORT);

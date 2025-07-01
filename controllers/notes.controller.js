@@ -1,7 +1,7 @@
 const Notes = require('../models/note.model.js');
 
 const handleGetNotes = async (req, res) => {
-    const notes = await Notes.find({}).select('-__v');
+    const notes = await Notes.find({ createdBy: req.user._id }).select('-__v');
     if(!notes){
         console.log('internal server error');
     }
@@ -10,7 +10,7 @@ const handleGetNotes = async (req, res) => {
 
 const handleGetNotesById = async (req, res) => {
     const id = req.params.id;
-    const note = await Notes.findById(id).select('-_id -__v');
+    const note = await Notes.findOne({ _id: id, createdBy: req.user._id }).select('-_id -__v');
     if(!note){
         console.log('internal server error');
     }
@@ -20,18 +20,19 @@ const handleGetNotesById = async (req, res) => {
 }
 const handleDeleteNotesById = async (req, res) => {
     const id = req.params.id;
-    const notes = await Notes.findByIdAndDelete(id).select('-_id -__v');
-    if(!notes){
+    const deleted = await Notes.findOneAndDelete({ _id: id, createdBy: req.user._id }).select('-_id -__v');
+    if(!deleted){
         console.log('internal server error');
     }
-    return res.json({"msg": "deleted successfully"});
+    return res.redirect('/');
 }
 const handlePostNotes = async (req, res) => {
     const {name, content} = req.body;
     const result = await Notes.create({
-        name,
-        content,
-    })
+            name,
+            content,
+            createdBy: req.user._id
+        });
     if(!result) {
         console.log('error in storing notes');
     }

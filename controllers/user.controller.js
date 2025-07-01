@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const { setUser } = require('../utils/auth.utils');
 
 const handleSignup =  async (req,res) => {
     const {username, email, password} = req.body;
@@ -6,15 +7,29 @@ const handleSignup =  async (req,res) => {
     if(!username || !email || !password) {
         return res.status(400).json({message: "all fields are required"});
     }
+    const existingUser = await User.findOne({email});
+    if(existingUser){
+        return res.status(400).json({message: "user already exists"});
+    }
     const user = await User.create({
         username,
         email,
         password
     })
     if(!user) {
-        return res.status(500).json({message: "internal server"});
+        return res.status(500).json({message: "internal server error"});
     }
-    return res.status(201).json(user);
+    const token = setUser({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        dateOfJoining: user.dateOfJoining,
+    });
+
+    res.cookie('uid', token);
+
+    return res.redirect('/');
 } 
 
 const handleLogin = async (req,res) => {
@@ -30,7 +45,15 @@ const handleLogin = async (req,res) => {
     if(user.password !== password){
         return res.status(400).json({message: "invalid credentials"});
     }
-    return res.status(200).json(user);
+    const token = setUser({_id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        dateOfJoining: user.dateOfJoining,
+    });
+
+    res.cookie('uid', token);
+    return res.redirect('/');
 }
 
 module.exports = {

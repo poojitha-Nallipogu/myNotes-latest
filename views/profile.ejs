@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="icon" type="image/png" href="/images/favicon.png"> <!-- Favicon -->
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="avatar">
+                <img src="/images/avatar.avif" alt="User Avatar">
+            </div>
+            
+            <div class="profile-info">
+                <p><span>Name:</span> <%= username %></p>
+                <p><span>Email:</span> <%= email %></p>
+                <p><span>Date Joined:</span> <%= new Date(dateOfJoining).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric'
+                    }) %>
+                </p>
+            </div>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
